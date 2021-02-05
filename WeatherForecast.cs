@@ -12,4 +12,9 @@ namespace WebApiDemo
 
         public string Summary { get; set; }
     }
+
+    public class WeatherForecastParams
+    {
+        public int count { get; set; }
+    }
 }

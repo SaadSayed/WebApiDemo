@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace WebApiDemo.Controllers
         }
 
         /// <summary>
-        /// HTTP Get Method to WeatherForecast List Objects
+        /// HTTP Get Method to get WeatherForecast List Objects
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -37,6 +38,29 @@ namespace WebApiDemo.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        /// <summary>
+        /// New HTTP GET Method to get WeatherForecast List Objects
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Route("[action]")]
+        [HttpPost]
+        public ActionResult<object> GenerateWeatherForcastList(WeatherForecastParams p)
+        {
+            if (p.count <= 2) p.count = 2;
+
+            Random rng = new Random();
+            object obj = Enumerable.Range(1, p.count).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+
+            return new ActionResult<object>(obj);
         }
     }
 }
