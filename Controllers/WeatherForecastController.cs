@@ -22,6 +22,10 @@ namespace WebApiDemo.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// HTTP Get Method to WeatherForecast List Objects
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
